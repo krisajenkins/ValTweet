@@ -28,18 +28,18 @@
        (instaparse/transform {:username identity
                               :freetext identity
                               :command identity
-                              :follow-command (fn [username _ _ _ followers-username]
+                              :follow-command (fn [username followers-username]
                                                 {:command :follow
                                                  :username username
                                                  :follows-username followers-username})
                               :read-command (fn [username]
                                               {:command :read
                                                :username username})
-                              :tweet-command (fn [username _ _ _ text]
+                              :tweet-command (fn [username text]
                                                {:command :post
                                                 :username username
                                                 :text text})
-                              :wall-command (fn [username _ _]
+                              :wall-command (fn [username]
                                               {:command :wall
                                                :username username})})))
 

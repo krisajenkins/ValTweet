@@ -3,9 +3,9 @@ command = tweet-command
         | follow-command
         | read-command
 
-tweet-command	= username whitespace "->" whitespace freetext
-wall-command	= username whitespace "wall"
-follow-command	= username whitespace "follows" whitespace username
+tweet-command	= username <whitespace> <"->"> <whitespace> freetext
+wall-command	= username <whitespace> <"wall">
+follow-command	= username <whitespace> <"follows"> <whitespace> username
 read-command	= username
 
 whitespace = #"\s*"
