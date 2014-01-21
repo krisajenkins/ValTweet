@@ -1,4 +1,5 @@
 (ns valtweet.ui
+  (:gen-class :main true)
   (:require [clj-time.core :refer [now]]
             [clojure.java.io :refer [resource]]
             [clojure.string :refer [join]]
