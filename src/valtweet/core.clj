@@ -19,3 +19,18 @@
                       (:username tweet))))
          (sort-by :time)
          reverse)))
+
+(defprotocol FollowGraph
+  (follow [graph user-a follows-user-b])
+  (follows? [graph user-a follows-user-b]))
+
+(extend-type clojure.lang.PersistentArrayMap
+  FollowGraph
+  (follow [graph user-a follows-user-b]
+    (update-in graph [user-a]
+               (fn [followers]
+                 (conj (or followers #{})
+                       follows-user-b))))
+  (follows? [graph user-a follows-user-b]
+    (let [following (graph user-a)]
+      (contains? following follows-user-b))))
