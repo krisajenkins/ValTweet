@@ -5,4 +5,5 @@
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.5.1"]
                  [clj-time "0.6.0"]
-                 [instaparse "1.2.14"]])
+                 [instaparse "1.2.14"]]
+  :main valtweet.ui)

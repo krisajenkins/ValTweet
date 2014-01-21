@@ -6,8 +6,8 @@
 
   (let [start (now)
         seconds (in-seconds (interval date start))
-        minutes (/ seconds 60)
-        hours (/ minutes 60)]
+        minutes (int (/ seconds 60))
+        hours   (int (/ minutes 60))]
     (cond
      (= seconds 0) "Just now"
      (= seconds 1) "1 second ago"
