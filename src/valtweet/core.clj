@@ -1,5 +1,4 @@
-(ns valtweet.core
-  (:require [clj-time.core :refer [now]]))
+(ns valtweet.core)
 
 (defrecord Tweet
     [username text time])

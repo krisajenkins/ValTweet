@@ -1,10 +1,10 @@
 (ns valtweet.ui
-  (:require [valtweet.util :refer [humanize-date]]
-            [clojure.string :refer [join]]
+  (:require [clj-time.core :refer [now]]
             [clojure.java.io :refer [resource]]
+            [clojure.string :refer [join]]
             [instaparse.core :as instaparse]
             [valtweet.core :refer :all]
-            [clj-time.core :refer [now]]))
+            [valtweet.util :refer [humanize-date]]))
 
 (defn format-tweet
   ([{:keys [username text time]} & {include-username? :include-username?

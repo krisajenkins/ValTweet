@@ -1,5 +1,5 @@
 (ns valtweet.util
-  (:require [clj-time.core :refer [now in-seconds interval seconds]]))
+  (:require [clj-time.core :refer [in-seconds interval now]]))
 
 (defn humanize-date
   [date]
