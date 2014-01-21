@@ -6,19 +6,23 @@
 
 (defprotocol TweetStore
   (post [store tweet])
+  (timeline-matching [store predicate])
   (tweets-by [store username]))
 
 (extend-type clojure.lang.PersistentHashSet
   TweetStore
   (post [store tweet]
     (conj store tweet))
-  (tweets-by [store username]
+  (timeline-matching [store predicate]
     (->> store
-         (filter (fn [tweet]
-                   (= username
-                      (:username tweet))))
+         (filter predicate)
          (sort-by :time)
-         reverse)))
+         reverse))
+  (tweets-by [store username]
+    (timeline-matching store
+                       (fn [tweet]
+                         (= username
+                            (:username tweet))))))
 
 (defprotocol FollowGraph
   (follow [graph user-a follows-user-b])
@@ -37,9 +41,7 @@
 
 (defn wall
   [store graph username]
-  (->> store
-       (filter (fn [tweet]
-                 (or (= username (:username tweet))
-                     (follows? graph username (:username tweet)))))
-       (sort-by :time)
-       reverse))
+  (timeline-matching store
+                     (fn [tweet]
+                       (or (= username (:username tweet))
+                           (follows? graph username (:username tweet))))))
