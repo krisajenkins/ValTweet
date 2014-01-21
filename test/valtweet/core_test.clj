@@ -3,6 +3,14 @@
             [valtweet.core :refer :all]
             [clj-time.core :refer [minus now minutes before?]]))
 
+(defn wrap-setup
+  [test-function]
+  (let [fixed-now (clj-time.core/now)]
+    (with-redefs [now (constantly fixed-now)]
+      (test-function))))
+
+(use-fixtures :once wrap-setup)
+
 (deftest timeline-tests
   (let [store (-> #{}
                   (post (->Tweet "Alice" "I love the weather today" (minus (now) (minutes 5))))
