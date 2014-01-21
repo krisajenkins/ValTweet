@@ -27,3 +27,31 @@
       (is (not (follows? graph "Bob" "Alice")))
       (is (not (follows? graph "Alice" "Steve")))
       (is (not (follows? graph "Steve" "Jim"))))))
+
+(deftest wall-tests
+  (let [tweet-alice-1   (->Tweet "Alice"   "I love the weather today" (minus (now) (minutes 5)))
+        tweet-bob-1     (->Tweet "Bob"     "Damn! We lost!"           (minus (now) (minutes 8)))
+        tweet-bob-2     (->Tweet "Bob"     "Good game though."        (minus (now) (minutes 1)))
+        tweet-charlie-1 (->Tweet "Charlie" "It was so-so."            (minus (now) (minutes 10)))
+        store (-> #{}
+                  (post tweet-alice-1)
+                  (post tweet-bob-1)
+                  (post tweet-bob-2)
+                  (post tweet-charlie-1))
+        graph (-> {}
+                  (follow "Charlie" "Alice")
+                  (follow "Charlie" "Bob")
+                  (follow "Bob" "Alice"))]
+
+    (is (= (wall store graph "Alice")
+           [tweet-alice-1]))
+    (is (= (wall store graph "Bob")
+           [tweet-bob-2
+            tweet-alice-1
+            tweet-bob-1]))
+    (is (= (wall store graph "Charlie")
+           [tweet-bob-2
+            tweet-alice-1
+            tweet-bob-1
+            tweet-charlie-1]))
+    (is (empty? (wall store graph "Steve")))))

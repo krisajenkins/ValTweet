@@ -1,17 +1,17 @@
 (ns valtweet.core
   (:require [clj-time.core :refer [now]]))
 
+(defrecord Tweet
+    [username text time])
+
 (defprotocol TweetStore
-  (post [store username text time])
+  (post [store tweet])
   (tweets-by [store username]))
 
 (extend-type clojure.lang.PersistentHashSet
   TweetStore
-  (post [store username text time]
-    (conj store
-          {:username username
-           :text text
-           :time time}))
+  (post [store tweet]
+    (conj store tweet))
   (tweets-by [store username]
     (->> store
          (filter (fn [tweet]
@@ -34,3 +34,12 @@
   (follows? [graph user-a follows-user-b]
     (let [following (graph user-a)]
       (contains? following follows-user-b))))
+
+(defn wall
+  [store graph username]
+  (->> store
+       (filter (fn [tweet]
+                 (or (= username (:username tweet))
+                     (follows? graph username (:username tweet)))))
+       (sort-by :time)
+       reverse))
