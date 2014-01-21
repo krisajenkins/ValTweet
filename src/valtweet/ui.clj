@@ -25,9 +25,7 @@
   [string]
 
   (->> (parser string)
-       (instaparse/transform {:username identity
-                              :freetext identity
-                              :command identity
+       (instaparse/transform {:command identity
                               :follow-command (fn [username followers-username]
                                                 {:command :follow
                                                  :username username

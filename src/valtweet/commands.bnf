@@ -9,5 +9,5 @@ follow-command	= username <whitespace> <"follows"> <whitespace> username
 read-command	= username
 
 whitespace = #"\s*"
-username = #"\w+"
-freetext = #".*"
+<username> = #"\w+"
+<freetext> = #".*"
