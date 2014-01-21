@@ -23,6 +23,8 @@
   (are [command-string result] (= (parse-command command-string)
                                   result)
 
+       ""                   {:command :noop}
+
        "Alice -> Nice day." {:command :post
                              :username "Alice"
                              :text "Nice day."}
@@ -64,6 +66,8 @@
                  ["Alice -> I love the weather today" (minutes 5) nil
                   "Bob -> Damn! We lost!"             (minutes 2) nil
                   "Bob -> Good game though."          (minutes 1) nil
+
+                  ""                                  (minutes 1) nil
 
                   "Alice"                             (minutes 0) ["I love the weather today (5 minutes ago)"]
                   "Bob"                               (minutes 0) ["Good game though. (1 minute ago)"

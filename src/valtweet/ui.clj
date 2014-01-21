@@ -39,7 +39,9 @@
                                                 :text text})
                               :wall-command (fn [username]
                                               {:command :wall
-                                               :username username})})))
+                                               :username username})
+                              :empty-command (fn []
+                                               {:command :noop})})))
 
 (defmulti process-command
   (fn [{command :command} system]
@@ -69,6 +71,10 @@
                   follow
                   username
                   follows-username)])
+
+(defmethod process-command :noop
+  [command system]
+  [nil system])
 
 (defn -main
   [& args]

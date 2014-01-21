@@ -2,11 +2,13 @@ command = tweet-command
         | wall-command
         | follow-command
         | read-command
+        | empty-command
 
 tweet-command	= username <whitespace> <"->"> <whitespace> freetext
 wall-command	= username <whitespace> <"wall">
 follow-command	= username <whitespace> <"follows"> <whitespace> username
 read-command	= username
+empty-command	= ""
 
 whitespace = #"\s*"
 <username> = #"\w+"
