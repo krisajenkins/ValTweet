@@ -9,7 +9,7 @@
         minutes (int (/ seconds 60))
         hours   (int (/ minutes 60))]
     (cond
-     (= seconds 0) "Just now"
+     (zero? seconds) "Just now"
      (= seconds 1) "1 second ago"
      (< minutes 1) (format "%d seconds ago" seconds)
 
