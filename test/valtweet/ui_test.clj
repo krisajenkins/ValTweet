@@ -1,8 +1,15 @@
 (ns valtweet.ui-test
   (:require [clojure.test :refer :all]
+            [midje.sweet :refer :all]
             [valtweet.core :refer :all]
             [valtweet.ui :refer :all]
             [clj-time.core :refer [minus now seconds minutes before?]]))
+
+(background
+ (around :facts
+         (let [fixed-now (clj-time.core/now)]
+           (with-redefs [now (constantly fixed-now)]
+             ?form))))
 
 (defn wrap-setup
   [test-function]
@@ -12,43 +19,47 @@
 
 (use-fixtures :once wrap-setup)
 
-(deftest format-tweet-test
-  (is (= (format-tweet (->Tweet "Alice" "I love the weather today" (minus (now) (minutes 5))))
-         "I love the weather today (5 minutes ago)"))
-  (is (= (format-tweet (->Tweet "Alice" "I love the weather today" (minus (now) (minutes 5)))
-                       :include-username? true)
-         "Alice - I love the weather today (5 minutes ago)")))
+(facts format-tweet-test
+  (fact "Formatting."
+    (format-tweet (->Tweet "Alice" "I love the weather today" (minus (now) (minutes 5))))
+    => "I love the weather today (5 minutes ago)"
+    (format-tweet (->Tweet "Alice" "I love the weather today" (minus (now) (minutes 5)))
+                  :include-username? true)
+    => "Alice - I love the weather today (5 minutes ago)"))
 
-(deftest parse-command-test
-  (are [command-string result] (= (parse-command command-string)
-                                  result)
+(facts parse-command-test
+  (tabular
+      (fact "Parsing commands"
+        (parse-command ?command-string) => ?result)
 
-       ""                   {:command :noop}
+      ?command-string      ?result
 
-       "Alice -> Nice day." {:command :post
-                             :username "Alice"
-                             :text "Nice day."}
-       "Bob -> Says you."   {:command :post
-                             :username "Bob"
-                             :text "Says you."}
+      ""                   {:command :noop}
 
-       "Alice"              {:command :read
-                             :username "Alice"}
-       "Bob"                {:command :read
-                             :username "Bob"}
+      "Alice -> Nice day." {:command :post
+                            :username "Alice"
+                            :text "Nice day."}
+      "Bob -> Says you."   {:command :post
+                            :username "Bob"
+                            :text "Says you."}
 
-       "Alice follows Bob"  {:command :follow
-                             :username "Alice"
-                             :follows-username "Bob"}
-       "Bob follows Steve"  {:command :follow
-                             :username "Bob"
-                             :follows-username "Steve"}
+      "Alice"              {:command :read
+                            :username "Alice"}
+      "Bob"                {:command :read
+                            :username "Bob"}
 
-       "Alice wall"         {:command :wall
-                             :username "Alice"}
+      "Alice follows Bob"  {:command :follow
+                            :username "Alice"
+                            :follows-username "Bob"}
+      "Bob follows Steve"  {:command :follow
+                            :username "Bob"
+                            :follows-username "Steve"}
 
-       "Bob wall"           {:command :wall
-                             :username "Bob"}))
+      "Alice wall"         {:command :wall
+                            :username "Alice"}
+
+      "Bob wall"           {:command :wall
+                            :username "Bob"}))
 
 (deftest end-to-end-test
   (let [start-time (now)]
