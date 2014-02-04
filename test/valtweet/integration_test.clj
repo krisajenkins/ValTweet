@@ -1,16 +1,8 @@
-(ns valtweet.ui-test
-  (:require [clojure.test :refer :all]
-            [midje.sweet :refer :all]
-            [valtweet.core :refer :all]
-            [valtweet.parser :refer :all]
-            [valtweet.ui :refer :all]
-            [clj-time.core :refer [minus now seconds minutes before?]]))
-
-(background
- (around :facts
-         (let [fixed-now (clj-time.core/now)]
-           (with-redefs [now (constantly fixed-now)]
-             ?form))))
+(ns valtweet.integration-test
+  (:require [clj-time.core :refer [minus minutes now seconds]]
+            [clojure.test :refer :all]
+            [valtweet.commands :refer [process-command]]
+            [valtweet.parser :refer [parse-command]]))
 
 (defn wrap-setup
   [test-function]
@@ -19,14 +11,6 @@
       (test-function))))
 
 (use-fixtures :once wrap-setup)
-
-(facts format-tweet-test
-  (fact "Formatting."
-    (format-tweet (->Tweet "Alice" "I love the weather today" (minus (now) (minutes 5))))
-    => "I love the weather today (5 minutes ago)"
-    (format-tweet (->Tweet "Alice" "I love the weather today" (minus (now) (minutes 5)))
-                  :include-username? true)
-    => "Alice - I love the weather today (5 minutes ago)"))
 
 (deftest end-to-end-test
   (let [start-time (now)]

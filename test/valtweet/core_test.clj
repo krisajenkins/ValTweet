@@ -1,7 +1,7 @@
 (ns valtweet.core-test
-  (:require [midje.sweet :refer :all]
-            [valtweet.core :refer :all]
-            [clj-time.core :refer [minus now minutes before?]]))
+  (:require [clj-time.core :refer [before? minus minutes now]]
+            [midje.sweet :refer :all]
+            [valtweet.core :refer :all]))
 
 (background
  (around :facts

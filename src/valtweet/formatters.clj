@@ -1,4 +1,4 @@
-(ns valtweet.util
+(ns valtweet.formatters
   (:require [clj-time.core :refer [in-seconds interval now]]))
 
 (defn humanize-date
@@ -18,3 +18,15 @@
 
      (= hours 1) "1 hour ago"
      :else (format "%d hours ago" hours))))
+
+(defn format-tweet
+  ([{:keys [username text time]} & {include-username? :include-username?
+                                    :or {:include-username? false}}]
+     (if include-username?
+       (format "%s - %s (%s)"
+               username
+               text
+               (humanize-date time))
+       (format "%s (%s)"
+               text
+               (humanize-date time)))))

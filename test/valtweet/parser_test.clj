@@ -1,6 +1,5 @@
 (ns valtweet.parser-test
-  (:require [clojure.test :refer :all]
-            [midje.sweet :refer :all]
+  (:require [midje.sweet :refer :all]
             [valtweet.parser :refer :all]))
 
 (facts parse-command-test

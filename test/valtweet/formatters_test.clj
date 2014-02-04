@@ -1,7 +1,8 @@
-(ns valtweet.util-test
-  (:require [midje.sweet :refer :all]
-            [valtweet.util :refer :all]
-            [clj-time.core :refer [minus now seconds minutes hours days before?]]))
+(ns valtweet.formatters-test
+  (:require [clj-time.core :refer [days hours minus minutes now seconds]]
+            [midje.sweet :refer :all]
+            [valtweet.core :refer :all]
+            [valtweet.formatters :refer :all]))
 
 (background
  (around :facts
@@ -31,3 +32,11 @@
 
    (minus (now) (days 1)) "24 hours ago"
    (minus (now) (days 2)) "48 hours ago"))
+
+(facts format-tweet-test
+  (fact "Formatting."
+    (format-tweet (->Tweet "Alice" "I love the weather today" (minus (now) (minutes 5))))
+    => "I love the weather today (5 minutes ago)"
+    (format-tweet (->Tweet "Alice" "I love the weather today" (minus (now) (minutes 5)))
+                  :include-username? true)
+    => "Alice - I love the weather today (5 minutes ago)"))
