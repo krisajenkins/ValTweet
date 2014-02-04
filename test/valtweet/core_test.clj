@@ -19,10 +19,10 @@
            "Damn! We lost!"])
 
 
-  (expect (timeline-matching store (fn [tweet]
+  (expect empty?
+          (timeline-matching store (fn [tweet]
                                      (before? (now)
-                                              (:time tweet))))
-          []))
+                                              (:time tweet))))))
 
 (let [graph (-> {}
                 (follow "Charlie" "Alice")
@@ -57,4 +57,4 @@
                                         tweet-alice-1
                                         tweet-bob-1
                                         tweet-charlie-1])
-  (expect (wall store graph "Steve")   []))
+  (expect empty? (wall store graph "Steve")))
