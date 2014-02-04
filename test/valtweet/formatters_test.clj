@@ -12,26 +12,26 @@
 
 (facts humanize-date-tests
   (tabular
-   (fact "Humanize date tests."
-       (humanize-date ?date) => ?string)
-   ?date ?string
+      (fact "Humanize date tests."
+        (humanize-date ?date) => ?string)
+      ?date ?string
 
-   (now) "Just now"
+      (now) "Just now"
 
-   (minus (now) (seconds 1)) "1 second ago"
-   (minus (now) (seconds 2)) "2 seconds ago"
-   (minus (now) (seconds 5)) "5 seconds ago"
+      (minus (now) (seconds 1)) "1 second ago"
+      (minus (now) (seconds 2)) "2 seconds ago"
+      (minus (now) (seconds 5)) "5 seconds ago"
 
-   (minus (now) (minutes 1)) "1 minute ago"
-   (minus (now) (minutes 2)) "2 minutes ago"
-   (minus (now) (minutes 5)) "5 minutes ago"
+      (minus (now) (minutes 1)) "1 minute ago"
+      (minus (now) (minutes 2)) "2 minutes ago"
+      (minus (now) (minutes 5)) "5 minutes ago"
 
-   (minus (now) (hours 1)) "1 hour ago"
-   (minus (now) (hours 2)) "2 hours ago"
-   (minus (now) (hours 5)) "5 hours ago"
+      (minus (now) (hours 1)) "1 hour ago"
+      (minus (now) (hours 2)) "2 hours ago"
+      (minus (now) (hours 5)) "5 hours ago"
 
-   (minus (now) (days 1)) "24 hours ago"
-   (minus (now) (days 2)) "48 hours ago"))
+      (minus (now) (days 1)) "24 hours ago"
+      (minus (now) (days 2)) "48 hours ago"))
 
 (facts format-tweet-test
   (fact "Formatting."
