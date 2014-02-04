@@ -2,6 +2,7 @@
   (:require [clojure.test :refer :all]
             [midje.sweet :refer :all]
             [valtweet.core :refer :all]
+            [valtweet.parser :refer :all]
             [valtweet.ui :refer :all]
             [clj-time.core :refer [minus now seconds minutes before?]]))
 
@@ -26,40 +27,6 @@
     (format-tweet (->Tweet "Alice" "I love the weather today" (minus (now) (minutes 5)))
                   :include-username? true)
     => "Alice - I love the weather today (5 minutes ago)"))
-
-(facts parse-command-test
-  (tabular
-      (fact "Parsing commands"
-        (parse-command ?command-string) => ?result)
-
-      ?command-string      ?result
-
-      ""                   {:command :noop}
-
-      "Alice -> Nice day." {:command :post
-                            :username "Alice"
-                            :text "Nice day."}
-      "Bob -> Says you."   {:command :post
-                            :username "Bob"
-                            :text "Says you."}
-
-      "Alice"              {:command :read
-                            :username "Alice"}
-      "Bob"                {:command :read
-                            :username "Bob"}
-
-      "Alice follows Bob"  {:command :follow
-                            :username "Alice"
-                            :follows-username "Bob"}
-      "Bob follows Steve"  {:command :follow
-                            :username "Bob"
-                            :follows-username "Steve"}
-
-      "Alice wall"         {:command :wall
-                            :username "Alice"}
-
-      "Bob wall"           {:command :wall
-                            :username "Bob"}))
 
 (deftest end-to-end-test
   (let [start-time (now)]
