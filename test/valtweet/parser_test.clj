@@ -1,37 +1,31 @@
 (ns valtweet.parser-test
-  (:require [midje.sweet :refer :all]
+  (:require [expectations :refer :all]
             [valtweet.parser :refer :all]))
 
-(facts parse-command-test
-  (tabular
-      (fact "Parsing commands"
-        (parse-command ?command-string) => ?result)
+(given [command-string result] (expect (parse-command command-string) result)
+  ""                   {:command :noop}
 
-      ?command-string      ?result
+  "Alice -> Nice day." {:command :post
+                        :username "Alice"
+                        :text "Nice day."}
+  "Bob -> Says you."   {:command :post
+                        :username "Bob"
+                        :text "Says you."}
 
-      ""                   {:command :noop}
+  "Alice"              {:command :read
+                        :username "Alice"}
+  "Bob"                {:command :read
+                        :username "Bob"}
 
-      "Alice -> Nice day." {:command :post
-                            :username "Alice"
-                            :text "Nice day."}
-      "Bob -> Says you."   {:command :post
-                            :username "Bob"
-                            :text "Says you."}
+  "Alice follows Bob"  {:command :follow
+                        :username "Alice"
+                        :follows-username "Bob"}
+  "Bob follows Steve"  {:command :follow
+                        :username "Bob"
+                        :follows-username "Steve"}
 
-      "Alice"              {:command :read
-                            :username "Alice"}
-      "Bob"                {:command :read
-                            :username "Bob"}
+  "Alice wall"         {:command :wall
+                        :username "Alice"}
 
-      "Alice follows Bob"  {:command :follow
-                            :username "Alice"
-                            :follows-username "Bob"}
-      "Bob follows Steve"  {:command :follow
-                            :username "Bob"
-                            :follows-username "Steve"}
-
-      "Alice wall"         {:command :wall
-                            :username "Alice"}
-
-      "Bob wall"           {:command :wall
-                            :username "Bob"}))
+  "Bob wall"           {:command :wall
+                        :username "Bob"})
