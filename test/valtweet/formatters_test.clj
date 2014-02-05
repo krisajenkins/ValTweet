@@ -24,7 +24,6 @@
     (minus (now) (days 1)) "24 hours ago"
     (minus (now) (days 2)) "48 hours ago"))
 
-
 (freeze-time (now)
   (expect (format-tweet (->Tweet "Alice" "I love the weather today" (minus (now) (minutes 5))))
     "I love the weather today (5 minutes ago)")
